@@ -63,7 +63,7 @@ if __name__ == '__main__':
                         else:
                             selects[line_num] = result_str
 
-                    print("# Count Dublicates %d" % count_dublicates)
+                    print("# Count: %d" % count_dublicates)
                     print(selects[line_num])
                     print("\n")
                     line_num+=1
