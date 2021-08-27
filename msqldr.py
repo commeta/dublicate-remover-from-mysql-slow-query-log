@@ -34,9 +34,9 @@ if __name__ == '__main__':
 
                     result_str += lines[i+number+1]
 
-
+                cropped_str = result_str[:40].lower()
                 for key, value in list(selects.items()):
-                    if value.lower().find(result_str[:40].lower()) != -1:
+                    if value.lower().find(cropped_str) != -1:
                         check = False
                         break
                             
