@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # Usage:
-#   msqldr.py /var/log/mysql/slow-queries.log
+#   msqldr.py /var/log/mysql/slow-queries.log > filtered-slow-queries.log
 #
 # Parse MySQL log slow queries and print filtered unique queries
 #
@@ -29,7 +29,7 @@ if __name__ == '__main__':
                     if i+number+1 >= len(lines):
                         break
 
-                    if lines[i+number+1].lower().find("# time:") != -1:
+                    if lines[i+number+1].lower().find("#") != -1:
                         break
 
                     result_str += lines[i+number+1]
