@@ -17,15 +17,19 @@ if __name__ == '__main__':
     PATH = sys.argv[1]
 
     if os.path.isfile(PATH) and os.access(PATH, os.R_OK):
+        # Open file from command line argument 
         lines = tuple(open(PATH, 'r'))
         for i in range(len(lines)):
+            # Iterate
             str = lines[i].strip()
 
             if str.lower().find("set timestamp") != -1:
+                # Start query secton
                 check = True
                 result_str = ""
 
-                for number in range(15):
+                for number in range(50):
+                    # Find end query section
                     if i+number+1 >= len(lines):
                         break
 
@@ -34,16 +38,21 @@ if __name__ == '__main__':
 
                     result_str += lines[i+number+1]
 
-                cropped_str = result_str[:40].lower()
+                # Search first 50 symbols
+                cropped_str = result_str[:50].lower()
+
                 for key, value in list(selects.items()):
+                    # Dublicate detector
                     if value.lower().find(cropped_str) != -1:
                         check = False
                         break
                             
                 if check:
+                    # Revome tabs & new line
                     result_str = result_str.replace("\t", "")
                     result_str = result_str.replace("\n", "")
 
+                    # Add Query_time string
                     if lines[i-1].find("#") != -1:
                         selects[line_num] = lines[i-1] + result_str
                     else:
@@ -57,4 +66,5 @@ if __name__ == '__main__':
 
                     print("\n")
     else:
-        print("File not found: ", sys.argv[1])
+        # Error!
+        print("File not found: ", PATH)
