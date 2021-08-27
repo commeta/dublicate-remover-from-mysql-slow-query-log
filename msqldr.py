@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# Usage:
+#   msqldr.py /var/log/mysql/slow-queries.log
+#
+# Parse MySQL log slow queries and print filtered unique queries
+#
+#
+#
 
 import sys
 import os.path
