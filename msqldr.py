@@ -27,7 +27,6 @@ if __name__ == '__main__':
                 # Start query secton
                 check = True
                 result_str = ""
-                count_dublicates = 0
 
                 for number in range(len(lines)-i-1):
                     # Find end query section
@@ -46,8 +45,6 @@ if __name__ == '__main__':
                     if value.lower().find(cropped_str) != -1:
                         check = False
                         break
-                    else:
-                        count_dublicates += 1
 
                 if check:
                     # Remove tabs & new line
@@ -63,7 +60,6 @@ if __name__ == '__main__':
                         else:
                             selects[line_num] = result_str
 
-                    print("# Count: %d" % count_dublicates)
                     print(selects[line_num])
                     print("\n")
                     line_num+=1
