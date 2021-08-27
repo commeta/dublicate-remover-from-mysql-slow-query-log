@@ -51,7 +51,7 @@ if __name__ == '__main__':
                         break
                             
                 if check:
-                    # Revome tabs & new line
+                    # Remove tabs & new line
                     result_str = result_str.replace("\t", "")
                     result_str = result_str.replace("\n", "")
 
