@@ -5,7 +5,7 @@
 #
 # Parse MySQL log slow queries and print filtered unique queries
 #
-#
+# Copyright 2021 commeta <dcs-spb@ya.ru>
 #
 
 import sys
