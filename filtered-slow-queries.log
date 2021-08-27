@@ -1,0 +1,40 @@
+# Query_time: 1.585409  Lock_time: 0.000386  Rows_sent: 3  Rows_examined: 406722
+SELECT IF(t1.cprice>t1.price,1,-1)*(t1.cprice-t1.price),min(t1.rnd),t1.product_id,name,text,t2.attribute_id FROM (SELECT RAND() as rnd,pa2.product_id,pr.price,cpr.price as cprice,count(pa2.attribute_id) as quan FROM my_table_attribute pa1 INNER JOIN my_table_attribute pa2 ON (pa1.attribute_id = pa2.attribute_id and pa1.text = pa2.text and pa2.product_id <> pa1.product_id and pa1.language_id = pa2.language_id) INNER JOIN my_table pr ON (pa2.product_id = pr.product_id and pr.status = 1) LEFT JOIN my_table cpr ON (pa1.product_id = cpr.product_id) INNER JOIN my_table_to_category cat_source on(pa1.product_id = cat_source.product_id) INNER JOIN my_table_to_category cat on(pa2.product_id = cat.product_id) WHERE pa1.product_id = '17749' AND pa1.language_id = '1' GROUP BY cpr.product_id,pr.price,cpr.price UNION ALL SELECT  RAND() as rnd,cpr.product_id,cpr.price,pr.price as cprice, 1 as quan FROM my_table pr LEFT JOIN my_table cpr ON (pr.product_id <> cpr.product_id and cpr.status = 1) INNER JOIN my_table_to_category cat_source ON (pr.product_id = cat_source.product_id) INNER JOIN my_table_to_category cat ON (cpr.product_id = cat.product_id) WHERE pr.product_id = '17749' GROUP BY cpr.product_id,pr.price,cpr.price order by quan desc) t1 INNER JOIN my_table_to_category cat on(t1.product_id = cat.product_id) LEFT JOIN (select '' as name, '' as text, 0 as attribute_id) as t2 on (0=0) WHERE 0=0 GROUP BY IF(t1.cprice>t1.price,1,-1)*(t1.cprice-t1.price),product_id,name,text,attribute_id ORDER BY t1.rnd, t1.product_id LIMIT 3;
+
+
+# Query_time: 1.068815  Lock_time: 0.000164  Rows_sent: 5  Rows_examined: 64120
+SELECT p.product_id, (SELECT AVG(rating) AS total FROM my_rev r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM my_table_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '1' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM my_table_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '1' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special FROM my_table p LEFT JOIN my_table_description pd ON (p.product_id = pd.product_id) LEFT JOIN my_table_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '1' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '0' GROUP BY p.product_id ORDER BY p.date_added DESC, LCASE(pd.name) DESC LIMIT 0,5;
+
+
+# Query_time: 1.014431  Lock_time: 0.000107  Rows_sent: 1  Rows_examined: 71289
+SELECT COUNT(DISTINCT p.product_id) AS total FROM my_cat_path cp LEFT JOIN my_table_to_category p2c ON (cp.category_id = p2c.category_id) LEFT JOIN my_table p ON (p2c.product_id = p.product_id) LEFT JOIN my_table_description pd ON (p.product_id = pd.product_id) LEFT JOIN my_table_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '1' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '0' AND cp.path_id = '227';
+
+
+# Query_time: 1.065021  Lock_time: 0.000025  Rows_sent: 109987  Rows_examined: 109987
+SELECT * FROM `my_database`.`my_filt_option_value_to_product`;
+
+
+# Query_time: 1.121456  Lock_time: 0.000027  Rows_sent: 15717  Rows_examined: 15717
+SELECT * FROM `my_database`.`my_table`;
+
+
+# Query_time: 1.218310  Lock_time: 0.000024  Rows_sent: 109987  Rows_examined: 109987
+SELECT * FROM `my_database`.`my_table_attribute`;
+
+
+# Query_time: 1.161797  Lock_time: 0.000041  Rows_sent: 15717  Rows_examined: 15717
+SELECT * FROM `my_database`.`my_table_description`;
+
+
+# Query_time: 1.220608  Lock_time: 0.000084  Rows_sent: 0  Rows_examined: 47960
+SELECT oov2p.value_id, oov2p.option_id, COUNT(DISTINCT p.product_id) AS total FROM my_filt_option_value_to_product oov2p LEFT JOIN my_table_to_category p2c ON (oov2p.product_id = p2c.product_id) LEFT JOIN my_table p ON (oov2p.product_id = p.product_id) LEFT JOIN my_cat_path cp ON (p2c.category_id = cp.category_id) WHERE p.status = '1' AND oov2p.value_id > '0' AND cp.path_id = '1881' GROUP BY oov2p.option_id, oov2p.value_id;
+
+
+# Query_time: 1.922180  Lock_time: 0.000079  Rows_sent: 1  Rows_examined: 47966
+SELECT p.manufacturer_id AS value_id, 'm' AS option_id, COUNT(DISTINCT p.product_id) AS total FROM my_table p LEFT JOIN my_table_to_category p2c ON (p.product_id = p2c.product_id) LEFT JOIN my_cat_path cp ON (p2c.category_id = cp.category_id) WHERE p.status = '1' AND cp.path_id = '2206' GROUP BY p.manufacturer_id;# User@Host: my_database[my_database] @ localhost []# Thread_id: 870  Schema: my_database  QC_hit: No# Query_time: 2.274976  Lock_time: 0.000185  Rows_sent: 1  Rows_examined: 55336SET timestamp=1630014807;SELECT MIN(p.price) AS `min`, MAX(p.price) AS `max` FROM my_table p LEFT JOIN my_table_to_category p2c ON (p.product_id = p2c.product_id) LEFT JOIN my_table_to_store p2s ON (p.product_id = p2s.product_id) LEFT JOIN my_cat_path cp ON (p2c.category_id = cp.category_id) WHERE p.status = '1' AND p.price > '0' AND p2s.store_id = '0' AND p.date_available <= '2021-08-27' AND cp.path_id = '1881';
+
+
+# Query_time: 1.821036  Lock_time: 0.000086  Rows_sent: 1  Rows_examined: 47966
+SELECT IF(p.quantity > '0', 'in', 'out') AS value_id, 's' AS option_id, COUNT(DISTINCT p.product_id) AS total FROM my_table p LEFT JOIN my_table_to_category p2c ON (p.product_id = p2c.product_id) LEFT JOIN my_cat_path cp ON (p2c.category_id = cp.category_id) WHERE p.status = '1' AND cp.path_id = '2206' GROUP BY value_id;# User@Host: my_database[my_database] @ localhost []# Thread_id: 876  Schema: my_database  QC_hit: No# Query_time: 4.676900  Lock_time: 0.154272  Rows_sent: 15  Rows_examined: 76690SET timestamp=1630014809;SELECT p.product_id, (SELECT AVG(rating) AS total FROM my_rev r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM my_table_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '1' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM my_table_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '1' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special FROM my_cat_path cp LEFT JOIN my_table_to_category p2c ON (cp.category_id = p2c.category_id) LEFT JOIN my_table p ON (p2c.product_id = p.product_id) LEFT JOIN my_table_description pd ON (p.product_id = pd.product_id) LEFT JOIN my_table_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '1' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '0' AND cp.path_id = '17' GROUP BY p.product_id ORDER BY p.sort_order ASC, LCASE(pd.name) ASC LIMIT 0,15;
+
+
