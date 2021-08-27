@@ -39,7 +39,7 @@ if __name__ == '__main__':
                     result_str += lines[i+number+1]
 
                 if not result_str:
-                    break
+                    continue
 
                 # Search first 50 symbols
                 cropped_str = result_str[:50].lower()
