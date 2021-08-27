@@ -44,10 +44,10 @@ if __name__ == '__main__':
                     result_str = result_str.replace("\t", "")
                     result_str = result_str.replace("\n", "")
 
-                    if lines[i-1].lower().find("# query_time:") != -1:
+                    if lines[i-1].lower().find("#") != -1:
                         selects[line_num] = lines[i-1] + result_str
                     else:
-                        if lines[i-2].lower().find("# query_time:") != -1:
+                        if lines[i-2].lower().find("#") != -1:
                             selects[line_num] = lines[i-2] + result_str
                         else:
                             selects[line_num] = result_str
