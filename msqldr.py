@@ -27,6 +27,7 @@ if __name__ == '__main__':
                 # Start query secton
                 check = True
                 result_str = ""
+                count_dublicates = 0
 
                 for number in range(len(lines)-i-1):
                     # Find end query section
@@ -40,17 +41,18 @@ if __name__ == '__main__':
 
                 # Search first 50 symbols
                 cropped_str = result_str[:50].lower()
-
                 for key, value in list(selects.items()):
                     # Dublicate detector
                     if value.lower().find(cropped_str) != -1:
                         check = False
                         break
+                    else:
+                        count_dublicates += 1
 
                 if check:
                     # Remove tabs & new line
-                    result_str = result_str.replace("\t", "")
-                    result_str = result_str.replace("\n", "")
+                    result_str = result_str.replace("\t", " ")
+                    result_str = result_str.replace("\n", " ")
 
                     # Add Query_time string
                     if lines[i-1].find("#") != -1:
@@ -61,10 +63,10 @@ if __name__ == '__main__':
                         else:
                             selects[line_num] = result_str
 
+                    print("# Count Dublicates %d" % count_dublicates)
                     print(selects[line_num])
-                    line_num+=1
-
                     print("\n")
+                    line_num+=1
     else:
         # Error!
         print("File not found: ", PATH)
