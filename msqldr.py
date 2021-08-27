@@ -28,7 +28,7 @@ if __name__ == '__main__':
                 check = True
                 result_str = ""
 
-                for number in range(len(lines)):
+                for number in range(len(lines)-i):
                     # Find end query section
                     if i+number+1 >= len(lines):
                         break
