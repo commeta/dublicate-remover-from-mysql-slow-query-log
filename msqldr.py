@@ -28,11 +28,8 @@ if __name__ == '__main__':
                 check = True
                 result_str = ""
 
-                for number in range(len(lines)-i):
+                for number in range(len(lines)-i-1):
                     # Find end query section
-                    if i+number+1 >= len(lines):
-                        break
-
                     if lines[i+number+1].find("#") != -1:
                         break
 
