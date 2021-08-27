@@ -28,7 +28,7 @@ if __name__ == '__main__':
                 check = True
                 result_str = ""
 
-                for number in range(50):
+                for number in range(len(lines)):
                     # Find end query section
                     if i+number+1 >= len(lines):
                         break
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                     if value.lower().find(cropped_str) != -1:
                         check = False
                         break
-                            
+
                 if check:
                     # Remove tabs & new line
                     result_str = result_str.replace("\t", "")
