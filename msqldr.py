@@ -47,6 +47,13 @@ if __name__ == '__main__':
                         break
 
                 if check:
+                    count_dub = 0
+
+                    for ii in range(len(lines)):
+                        str_search = lines[ii].strip()
+                        if str_search.lower().find(cropped_str) != -1:
+                            count_dub += 1
+
                     # Remove tabs & new line
                     result_str = result_str.replace("\t", " ")
                     result_str = result_str.replace("\n", " ")
@@ -60,8 +67,7 @@ if __name__ == '__main__':
                         else:
                             selects[line_num] = result_str
 
-                    print(selects[line_num])
-                    print("\n")
+                    print("# Count %d\n%s\n" % (count_dub, selects[line_num]))
                     line_num+=1
     else:
         # Error!
